@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <!-- Bootstrap CSS -->
+  <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <style>
+    .fullpage{
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: #282c34;
+  }
+  </style>
+
+  <title>Final Projesi | Anasayfa</title>
+  <!-- Custom styles for this template -->
+  <link href="{% static 'home/css/style.css' %}" rel="stylesheet" />
+</head>
+
+<body class="text-center text-white bg-dark">
+  <noscript>
+    <div class="fullpage">
+      <h1>Bu sitede işlem yapabilmek için tarayıcı ayarlarında javascript özelliğini açmanız gerekiyor.</h1>
+    </div>
+
+  </noscript>
+  <nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="/">Final Projesi</a>
+      <form class="d-flex">
+        {% if request.user.is_anonymous == True %}
+        <a href="/login/" class="btn btn-success">Giriş Yap</a>
+        {% else %}
+        <div class="dropdown">
+          <a style="font-size:20px" class="bg-transparent text-white text-decoration-none" type="button"
+            id="dropdownRightMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            {{request.user}}
+            <img width="30px" src="{% static 'images/pylogo.png' %}"></img>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" style="background-color: #282c34;"
+            aria-labelledby="dropdownRightMenuButton">
+            <li><a class="dropdown-item text-center text-white" href="/gallery/">Galeri</a></li>
+            <li><a class="dropdown-item text-center text-white" href="/">Resim Yükle</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-center text-danger" href="/logout/">Çıkış</a></li>
+          </ul>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col"></div>
+      <div class="col-md-4 align-self-center">
+        <div class="card text-white" style="background-color: #282c34">
+          <h2 class="card-header">Sayfa Bulunamadı</h2>
+          <div class="card-body images">
+            <span>Şu anda erişmeye çalıştığınız sayfa bulunamadı. Bir hata olduğunu düşünüyorsanız düşünmeyin.</span>
+            <br><a href="/" class="text-white">Anasayfaya gitmek için tıkla.</a>
+          </div>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+  <footer class="footer mt-auto py-3 bg-transparent fixed-bottom">
+    <div class="container">
+      <span class="text-muted">
+        <a href="https://github.com/Lyxcus" class="text-white p-2 radius-4 bg-primary footer-link">
+          <i class="fab fa-github"></i> @lyxcus
+        </a>
+        <a href="https://github.com/Rulng" class="text-white p-2 radius-4 mx-3 bg-primary footer-link">
+          <i class="fab fa-github"></i> @rulng
+        </a>
+        <a href="https://github.com/mtehnakdmr" class="text-white p-2 radius-4 bg-primary footer-link">
+          <i class="fab fa-github"></i> @mtehnakdmr
+        </a>
+      </span>
+    </div>
+  </footer>
+  <!-- Optional JavaScript -->
+  <script src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>

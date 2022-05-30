@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'images/favicon.ico' %}"
+    />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      .fullpage{
+      position: absolute;
+      z-index: 999;
+      width: 100%;
+      height: 100%;
+      color: white;
+      background-color: #282c34;
+    }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'home/css/style.css' %}" rel="stylesheet" />
+
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+      }
+
+      .form-signin .checkbox {
+        font-weight: 400;
+      }
+
+      .form-signin .form-control {
+        margin: 16px 3px;
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      .form-signin .form-control:focus {
+        z-index: 2;
+      }
+
+      .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .footer-link {
+        color: rgb(255, 255, 255);
+        border-radius: 10px;
+        text-decoration: none;
+      }
+
+      .footer-link:hover {
+        color: rgba(255, 255, 255, 0.566);
+        text-decoration: underline;
+      }
+    </style>
+
+    <title>Final Projesi | Giriş</title>
+    <!-- Custom styles for this template -->
+  </head>
+
+  <body class="text-center text-white bg-dark">
+    <noscript>
+      <div class="fullpage">
+        <h1>Bu sitede işlem yapabilmek için tarayıcı ayarlarında javascript özelliğini açmanız gerekiyor.</h1>
+      </div>
+  
+    </noscript>
+
+    <form class="form-signin" method="post" action="/login/">
+      {% if durum == 0 %}
+      <div class="alert alert-danger" role="alert">
+        <strong>Hata!</strong> Kullanıcı adı veya şifre yanlış.
+      </div>
+      {% endif %} {% csrf_token %}
+      <img
+        class="mb-4"
+        src="{% static 'images/pylogo.png' %}"
+        alt=""
+        width="72"
+        height="72"
+      />
+      <h1 class="h3 mb-3 font-weight-normal">Giriş Yap</h1>
+      
+      <input
+        type="text"
+        id="inputEmail"
+        name="username"
+        class="form-control"
+        placeholder="Kullanıcı Adı"
+        required
+        autofocus
+      />
+      
+      <input
+        type="password"
+        id="inputPassword"
+        name="password"
+        class="form-control"
+        placeholder="Şifre"
+        required
+      />
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me" /> Beni Hatırla
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">
+        Giriş Yap
+      </button>
+    </form>
+    <footer class="footer mt-auto py-3 bg-transparent fixed-bottom">
+      <div class="container">
+        <span class="text-muted">
+          <a
+            href="https://github.com/Lyxcus"
+            class="text-white p-2 radius-4 bg-primary footer-link"
+          >
+            <i class="fab fa-github"></i> @lyxcus
+          </a>
+          <a href="https://github.com/Rulng" class="text-white p-2 radius-4 mx-3 bg-primary footer-link">
+            <i class="fab fa-github"></i> @rulng
+          </a>
+          <a href="https://github.com/mtehnakdmr" class="text-white p-2 radius-4 bg-primary footer-link">
+            <i class="fab fa-github"></i> @mtehnakdmr
+          </a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>

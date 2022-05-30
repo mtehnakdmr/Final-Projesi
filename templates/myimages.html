@@ -1,0 +1,187 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
+  <!-- Bootstrap CSS -->
+  <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+  <style>
+    .fullpage{
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: #282c34;
+  }
+  </style>
+
+  <title>Galeri | {{username}}</title>
+  <!-- Custom styles for this template -->
+  <link href="{% static 'home/css/style.css' %}" rel="stylesheet" />
+</head>
+
+
+
+<body class="text-center text-white bg-dark">
+  <noscript>
+    <div class="fullpage">
+      <h1>Bu sitede işlem yapabilmek için tarayıcı ayarlarında javascript özelliğini açmanız gerekiyor.</h1>
+    </div>
+
+  </noscript>
+
+  <nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="/">Final Projesi</a>
+      <form class="d-flex">
+        <div class="dropdown">
+          <a style="font-size:20px" class="bg-transparent text-white text-decoration-none" type="button" id="dropdownRightMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            {{username}}
+            <img width="30px" src="{% static 'images/pylogo.png' %}"></img>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" style="background-color: #282c34;" aria-labelledby="dropdownRightMenuButton">
+            <li><a class="dropdown-item text-center text-white" href="/gallery/">Galeri</a></li>
+            <li><a class="dropdown-item text-center text-white" href="/">Resim Yükle</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center text-danger" href="/logout/">Çıkış</a></li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </nav>
+  <div class="position-relative">
+    <div class="toast align-items-center position-absolute top-0 end-0" style="width: 250px;" role="alert"
+      style="z-index: 3;" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body text-dark">
+          <span style="width: 15px;height: 15px;" class="spinner-grow text-success" role="status"></span>
+          <span class="justify-content-center text-center">Link başarıyla kopyalandı.</span>
+
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-4 align-self-start">
+        <div class="card text-white" style="background-color: #282c34;">
+          <h5 class="card-header">Profil</h5>
+          <div class="card-body">
+            <img style="width: 100px; margin-bottom: 10px" src="{% static 'images/pylogo.png' %}">
+            <h5 class="card-title">{{username}}</h5>
+            <p class="card-text">
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Ad soyad:</strong> {{name}} {{lastname}}</p>
+            </p>
+          </div>
+        </div>
+        {% if imgNone == 1 %}
+        <div class="col-md-12 mt-3">
+          <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Galerinde resim yok!</h4>
+            <p>Resim eklemek için <a href="/">buraya</a> tıklayın.</p>
+          </div>
+        </div>
+        {% else %}
+        <!-- alert box -->
+        <div class="alert alert-success mt-3" role="alert">
+          Galerinde <strong>{{imgSize}} adet</strong> resim bulunuyor.
+        </div>
+        {% endif %}
+      </div>
+      <div class="col">
+        <div class="row" style="overflow-y: scroll; height: 80vh;">
+          {% for img in images %}
+          <div class="col-md-6 my-2">
+            <div style="height: 400px; background-color: #282c34;" class="card text-white">
+              <a style="border: 2px solid #424853;height:200px;" href="/{{img.imageURL}}">
+                <img class="card-img-top" src="{{img.image.url}}" alt="{{img.image.name}}" style="height:196px;" /></a>
+              <div class="card-body">
+                <h5 class="card-title">{{img.image.name}}</h5>
+                <p class="card-text">
+                <p><strong>Yükleme Tarihi:</strong> {{img.uploaded_at}}</p>
+                <p><strong>Yükleyen:</strong> {{img.uploader}}</p>
+                <input hidden type="text" value="{{hostName}}/{{img.imageURL}}">
+                <button class="btn btn-success" id="liveToastBtn" onclick="kopyala(this)">Linki Kopyala</button> <a
+                  href="{{img.image.url}}" class="btn btn-info" download>İndir</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop{{img.id}}">
+                  Sil
+                </button>
+                <div class="modal fade" id="staticBackdrop{{img.id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-4 shadow">
+                      <div class="modal-body p-4 text-center text-dark">
+                        <h5 class="mb-0">Emin misin?</h5>
+                        <p class="mb-0 mt-2"><strong>{{img.image.name}}</strong> adlı resmi silmek istediğine emin misin?</p>
+                      </div>
+                      <div class="modal-footer flex-nowrap p-0">
+                        <form action="/gallery/" method="post" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" >
+                          {% csrf_token %}
+                          <input hidden name="imageID" type="text" value="{{img.id}}">
+                          <input class="btn btn-lg btn-link fs-6 text-decoration-none col-12 m-0 rounded-0 border-right text-danger text-danger fw-bold" type="submit" value="Evet, sil.">
+                        </form>
+                        <button type="button" class="btn btn-lg btn-link outline-none fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">Hayır, vazgeçtim.</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <footer class="footer mt-auto py-3 bg-dark fixed-bottom bg-transparent">
+    <div class="container">
+      <span class="text-muted">
+        <a href="https://github.com/Lyxcus" class="text-white p-2 radius-4 bg-primary footer-link">
+          <i class="fab fa-github"></i> @lyxcus
+        </a>
+        <a href="https://github.com/Rulng" class="text-white p-2 radius-4 mx-3 bg-primary footer-link">
+          <i class="fab fa-github"></i> @rulng
+        </a>
+        <a href="https://github.com/mtehnakdmr" class="text-white p-2 radius-4 bg-primary footer-link">
+          <i class="fab fa-github"></i> @mtehnakdmr
+        </a>
+      </span>
+    </div>
+  </footer>
+  <!-- Optional JavaScript -->
+  <script src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
+
+  <script src="{% static 'home/js/jquery-3.6.0.js' %}"></script>
+
+
+  <script>
+
+    function kopyala(element) {
+      var alan = element.parentElement.querySelector('input').value;
+      var textAlani = document.createElement('TEXTAREA');
+      textAlani.value = alan;
+      document.body.appendChild(textAlani);
+      textAlani.select();
+      document.execCommand('copy');
+      textAlani.style.display = 'none';
+      $('.toast').toast('show');
+    }
+  </script>
+</body>
+
+</html>
