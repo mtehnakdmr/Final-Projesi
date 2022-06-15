@@ -87,13 +87,13 @@ def loginUser(request):
         return redirect("/")#Ana sayfaya yönlendiriyoruz
         
     if request.method == "POST": #Post isteği gelmişse
-        username = request.POST.get('username') #Kullanıcı adını alıyoruz
+        username = request.POST.get('username') #Kullanıcı adını alıyoruz.
         password = request.POST.get('password') #Şifreyi alıyoruz
         user = authenticate(username=username, password=password) #Kullanıcıyı doğruluyoruz
 
         if user is not None: #Kullanıcı doğrulandıysa
-            login(request, user) #Kullanıcıyı oturum açıyoruz
-            return redirect("/") #Ana sayfaya yönlendiriyoruz
+            login(request, user) #Kullanıcıyı oturum açıyoruz.
+            return redirect("/") #Ana sayfaya yönlendiriyoruz.
 
         else:#Kullanıcı doğrulanmadıysa
             durum = 0 #Kullanıcı doğrulanmadı değeri 0 yapıyoruz
@@ -110,12 +110,12 @@ def logoutUser(request):
 def handler404(request):
     isAnon = 0 #Kullanıcı anonim mi?
     if request.user.is_anonymous: #Kullanıcı anonim ise
-        isAnon = 1 #Anonim değeri 1 yapıyoruz
+        isAnon = 1 #Anonim değeri 1 yapıyoruz.
     if isAnon == 0: #Kullanıcı anonim değilse
-        username = request.user #Kullanıcı adını alıyoruz
+        username = request.user #Kullanıcı adını alıyoruz.
     else:#Kullanıcı anonim ise
-        username = "" #Boş değer yapıyoruz
-    return render(request, '404.html',context={'isAnon':isAnon,'username':username}) #404 sayfasını gönderiyoruz
+        username = "" #Boş değer yapıyoruz.
+    return render(request, '404.html',context={'isAnon':isAnon,'username':username}) #404 sayfasını gönderiyoruz.
 
 #resim sayfası
 def image(request, *args, **kwargs):
@@ -128,7 +128,7 @@ def image(request, *args, **kwargs):
         username = request.user #Kullanıcı adını alıyoruz
     else: #Kullanıcı anonim ise
         username = ""#Boş değer yapıyoruz
-    images = UploadImage.objects.filter(imageURL=kwargs["imageURL"])#Resmi alıyoruz
+    images = UploadImage.objects.filter(imageURL=kwargs["imageURL"])#Resmi alıyoruz.
     c = None 
     for i in images: #Resimleri döngüye sokuyoruz
         if i.image is not None: #Resim varsa 
@@ -136,15 +136,15 @@ def image(request, *args, **kwargs):
             b = a.split("/") #Resim dosyasının adını alıyoruz
             c = b[len(b) - 1] #Resim dosyasının adını alıyoruz
 
-    emColor = randColor() #Rastgele renk üretiyoruz
+    emColor = randColor() #Rastgele renk üretiyoruz.
     if isAnon == 0: #Kullanıcı anonim değilse
         if c is not None: #Resim varsa
-            return render(request, 'image.html', context={'img': images,'hostName':hostName,'emColor':emColor, 'imgName': c}) #Resim sayfasını gönderiyoruz
+            return render(request, 'image.html', context={'img': images,'hostName':hostName,'emColor':emColor, 'imgName': c}) #Resim sayfasını gönderiyoruz.
         else: #Resim yoksa
             return render(request, '404.html', context={'isAnon': isAnon,'username':username}) #404 sayfasını gönderiyoruz
     else: #Kullanıcı anonim ise
         if c is not None: #Resim varsa
-            return render(request, 'image.html', context={'img': images,'hostName':hostName,'emColor':emColor, 'imgName': c}) #Resim sayfasını gönderiyoruz
+            return render(request, 'image.html', context={'img': images,'hostName':hostName,'emColor':emColor, 'imgName': c}) #Resim sayfasını gönderiyoruz.
         else: #Resim yoksa
-            return render(request, '404.html', context={'isAnon': isAnon,'username':username}) #404 sayfasını gönderiyoruz
+            return render(request, '404.html', context={'isAnon': isAnon,'username':username}) #404 sayfasını gönderiyoruz.
 
