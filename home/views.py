@@ -12,14 +12,14 @@ from .models import UploadImage
 #Resim formatını kontrol eden fonksiyon
 def isValidFormat(image):
     uzantılar = ["png", "jpg", "jpeg", "webp", "bmp"] #uzantı listesi
-    x = image.split(".") #resim adının uzantısını ayırıyoruz
-    Format = x[len(x) - 1] #resim adının uzantısını alıyoruz
-    for i in uzantılar: #uzantı listesindeki uzantıları kontrol ediyoruz
+    x = image.split(".") #resim adının uzantısını ayırıyoruz.
+    Format = x[len(x) - 1] #resim adının uzantısını alıyoruz.
+    for i in uzantılar: #uzantı listesindeki uzantıları kontrol ediyoruz.
         if i in Format: #uzantı varsa
             return True #format doğru
     return False #format yanlış
 
-#Rastgele renk üreten fonksiyon
+#Rastgele renk üreten fonksiyon.
 def randColor():
     color = "#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]) #6 karakterden oluşan hex kodu oluşturuyoruz
     return color #hex kodunu döndürüyoruz
@@ -30,7 +30,7 @@ def id_generator(size=6, chars=string.ascii_letters + string.digits):
 
 
 
-#Resim yükleme sayfası
+#Resim yükleme sayfası.
 def index(request):
     if request.user.is_anonymous: #Kullanıcı giriş yapmamış ise
         return redirect("/login/") #Giriş sayfasına yönlendiriyoruz
@@ -44,33 +44,33 @@ def index(request):
 
         unknownFormat = 0 #Resim formatı bilinmiyor mu?
 
-        if not isValidFormat(img): #Resim formatı bilinmiyorsa
+        if not isValidFormat(img): #Resim formatı bilinmiyorsa.
             unknownFormat = 1 #Bilinmiyor değeri 1 yapıyoruz
             return render(request, 'index.html', {'form': form, 'unknownFormat': unknownFormat, 'username': request.user, 'url': url}) #Formu gönderiyoruz
 
         
         if form.is_valid(): #Form geçerli ise
-            form.save() #Formu kaydediyoruz
-            isUploaded = 1 #Resim yüklendi değeri 1 yapıyoruz
+            form.save() #Formu kaydediyoruz.
+            isUploaded = 1 #Resim yüklendi değeri 1 yapıyoruz.
 
             return render(request, 'index.html', {'form': form, 'isUploaded': isUploaded, 'username': request.user, 'url': url}) #Formu gönderiyoruz
     else: #Post isteği gelmemişse
-        form = UploadImageForm() #boş form oluşturuyoruz
+        form = UploadImageForm() #boş form oluşturuyoruz.
     return render(request, 'index.html', {'form': form, 'isUploaded': isUploaded, 'username': request.user, 'url': url}) #Formu gönderiyoruz
 
 #Resimleri gösterme sayfası
 def myimages(request):
     if request.user.is_anonymous: #Kullanıcı giriş yapmamış ise
-        return redirect("/login") #Giriş sayfasına yönlendiriyoruz
+        return redirect("/login") #Giriş sayfasına yönlendiriyoruz.
         
     hostName = settings.HOSTNAME #alan adını alıyoruz
     images = UploadImage.objects.filter(uploader=request.user) #Kullanıcının yüklediği resimleri alıyoruz
 
-    img = list(images) #Resimleri listeye çeviriyoruz
+    img = list(images) #Resimleri listeye çeviriyoruz.
     imgNone = 0 #Resim yok mu
     imgSize = 0 #resim adının karakter sayısı
     if img == []: #Resim yoksa
-        imgNone = 1 #Resim yok değeri 1 yapıyoruz
+        imgNone = 1 #Resim yok değeri 1 yapıyoruz.
     else: #Resim varsa
         imgSize = len(img) #Resim adının karakter sayısını alıyoruz
 
