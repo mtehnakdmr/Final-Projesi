@@ -22,11 +22,11 @@ def isValidFormat(image):
 #Rastgele renk üreten fonksiyon.
 def randColor():
     color = "#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]) #6 karakterden oluşan hex kodu oluşturuyoruz
-    return color #hex kodunu döndürüyoruz
+    return color #hex kodunu döndürüyoruz.
 
 #Rastgele karakterlerden oluşan id oluşturan fonksiyon
 def id_generator(size=6, chars=string.ascii_letters + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size)) #size değeri kadar rastgele karakter oluşturuyoruz
+    return ''.join(random.choice(chars) for _ in range(size)) #size değeri kadar rastgele karakter oluşturuyoruz.
 
 
 
@@ -39,13 +39,13 @@ def index(request):
     isUploaded = 0 #Resim yüklenmiş mi?
 
     if request.method == "POST": #Post isteği gelmişse
-        form = UploadImageForm(request.POST, request.FILES) #Formu oluşturuyoruz
-        img = request.FILES['image'].name #Resim adını alıyoruz
+        form = UploadImageForm(request.POST, request.FILES) #Formu oluşturuyoruz.
+        img = request.FILES['image'].name #Resim adını alıyoruz.
 
         unknownFormat = 0 #Resim formatı bilinmiyor mu?
 
         if not isValidFormat(img): #Resim formatı bilinmiyorsa.
-            unknownFormat = 1 #Bilinmiyor değeri 1 yapıyoruz
+            unknownFormat = 1 #Bilinmiyor değeri 1 yapıyoruz.
             return render(request, 'index.html', {'form': form, 'unknownFormat': unknownFormat, 'username': request.user, 'url': url}) #Formu gönderiyoruz
 
         
@@ -63,43 +63,43 @@ def myimages(request):
     if request.user.is_anonymous: #Kullanıcı giriş yapmamış ise
         return redirect("/login") #Giriş sayfasına yönlendiriyoruz.
         
-    hostName = settings.HOSTNAME #alan adını alıyoruz
+    hostName = settings.HOSTNAME #alan adını alıyoruz.
     images = UploadImage.objects.filter(uploader=request.user) #Kullanıcının yüklediği resimleri alıyoruz
 
     img = list(images) #Resimleri listeye çeviriyoruz.
-    imgNone = 0 #Resim yok mu
+    imgNone = 0 #Resim yok mu?
     imgSize = 0 #resim adının karakter sayısı
     if img == []: #Resim yoksa
         imgNone = 1 #Resim yok değeri 1 yapıyoruz.
     else: #Resim varsa
-        imgSize = len(img) #Resim adının karakter sayısını alıyoruz
+        imgSize = len(img) #Resim adının karakter sayısını alıyoruz.
 
     if request.method == "POST":#Post isteği gelmişse
-        id = request.POST.get("imageID") #Resim id'sini alıyoruz
-        i = UploadImage.objects.filter(id=int(id)) #Resim id'sine göre filtreyi oluşturuyoruz
+        id = request.POST.get("imageID") #Resim id'sini alıyoruz.
+        i = UploadImage.objects.filter(id=int(id)) #Resim id'sine göre filtreyi oluşturuyoruz.
         i.delete() #Resmi siliyoruz
-        return redirect("/gallery/") #Galeri sayfasına yönlendiriyoruz
+        return redirect("/gallery/") #Galeri sayfasına yönlendiriyoruz.
     return render(request, 'myimages.html', context={'images': images,'hostName': hostName, 'imgSize': imgSize, 'imgNone': imgNone, 'email': request.user.email, 'name': request.user.first_name, 'lastname': request.user.last_name, 'username': request.user}) #Resimleri gösterme sayfasını gönderiyoruz
 
 #Giriş sayfası
 def loginUser(request):
     if not request.user.is_anonymous: #Kullanıcı giriş yapmış ise
-        return redirect("/")#Ana sayfaya yönlendiriyoruz
+        return redirect("/")#Ana sayfaya yönlendiriyoruz.
         
     if request.method == "POST": #Post isteği gelmişse
         username = request.POST.get('username') #Kullanıcı adını alıyoruz.
-        password = request.POST.get('password') #Şifreyi alıyoruz
-        user = authenticate(username=username, password=password) #Kullanıcıyı doğruluyoruz
+        password = request.POST.get('password') #Şifreyi alıyoruz.
+        user = authenticate(username=username, password=password) #Kullanıcıyı doğruluyoruz.
 
         if user is not None: #Kullanıcı doğrulandıysa
             login(request, user) #Kullanıcıyı oturum açıyoruz.
             return redirect("/") #Ana sayfaya yönlendiriyoruz.
 
         else:#Kullanıcı doğrulanmadıysa
-            durum = 0 #Kullanıcı doğrulanmadı değeri 0 yapıyoruz
+            durum = 0 #Kullanıcı doğrulanmadı değeri 0 yapıyoruz.
             return render(request, 'login.html', context={'durum': durum}) #Giriş sayfasını gönderiyoruz
 
-    return render(request, 'login.html') #Giriş sayfasını gönderiyoruz
+    return render(request, 'login.html') #Giriş sayfasını gönderiyoruz.
 
 #Çıkış yapma sayfası
 def logoutUser(request):
@@ -119,32 +119,32 @@ def handler404(request):
 
 #resim sayfası
 def image(request, *args, **kwargs):
-    url = kwargs["imageURL"] #resim adresini alıyoruz
-    hostName = settings.HOSTNAME #alan adını alıyoruz
+    url = kwargs["imageURL"] #resim adresini alıyoruz.
+    hostName = settings.HOSTNAME #alan adını alıyoruz.
     isAnon = 0 #Kullanıcı anonim mi?
-    if request.user.is_anonymous: #Kullanıcı anonim ise
-        isAnon = 1 #Anonim değeri 1 yapıyoruz
-    if isAnon == 0: #Kullanıcı anonim değilse
-        username = request.user #Kullanıcı adını alıyoruz
-    else: #Kullanıcı anonim ise
-        username = ""#Boş değer yapıyoruz
+    if request.user.is_anonymous: #Kullanıcı anonim ise.
+        isAnon = 1 #Anonim değeri 1 yapıyoruz.
+    if isAnon == 0: #Kullanıcı anonim değilse.
+        username = request.user #Kullanıcı adını alıyoruz.
+    else: #Kullanıcı anonim ise.
+        username = ""#Boş değer yapıyoruz.
     images = UploadImage.objects.filter(imageURL=kwargs["imageURL"])#Resmi alıyoruz.
     c = None 
-    for i in images: #Resimleri döngüye sokuyoruz
+    for i in images: #Resimleri döngüye sokuyoruz.
         if i.image is not None: #Resim varsa 
-            a = str(i.image) #Resim dosyasını alıyoruz
-            b = a.split("/") #Resim dosyasının adını alıyoruz
-            c = b[len(b) - 1] #Resim dosyasının adını alıyoruz
+            a = str(i.image) #Resim dosyasını alıyoruz.
+            b = a.split("/") #Resim dosyasının adını alıyoruz.
+            c = b[len(b) - 1] #Resim dosyasının adını alıyoruz.
 
     emColor = randColor() #Rastgele renk üretiyoruz.
-    if isAnon == 0: #Kullanıcı anonim değilse
-        if c is not None: #Resim varsa
+    if isAnon == 0: #Kullanıcı anonim değilse.
+        if c is not None: #Resim varsa.
             return render(request, 'image.html', context={'img': images,'hostName':hostName,'emColor':emColor, 'imgName': c}) #Resim sayfasını gönderiyoruz.
         else: #Resim yoksa
-            return render(request, '404.html', context={'isAnon': isAnon,'username':username}) #404 sayfasını gönderiyoruz
-    else: #Kullanıcı anonim ise
-        if c is not None: #Resim varsa
+            return render(request, '404.html', context={'isAnon': isAnon,'username':username}) #404 sayfasını gönderiyoruz.
+    else: #Kullanıcı anonim ise.
+        if c is not None: #Resim varsa.
             return render(request, 'image.html', context={'img': images,'hostName':hostName,'emColor':emColor, 'imgName': c}) #Resim sayfasını gönderiyoruz.
-        else: #Resim yoksa
+        else: #Resim yoksa.
             return render(request, '404.html', context={'isAnon': isAnon,'username':username}) #404 sayfasını gönderiyoruz.
 
